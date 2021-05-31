@@ -2,7 +2,11 @@
 
 #include <wb.h>
 
+<<<<<<< HEAD
 #define HISTOGRAM_LENGTH 512
+=======
+#define HISTOGRAM_LENGTH 256
+>>>>>>> 0e00539544665c903cde2a2240e3290905c69cb4
 #define BLOCK_SIZE 32
 
 //@@ insert code here
@@ -13,7 +17,10 @@ __global__ void scan(int *input, int *output, int len) {
   //@@ function and call them from the host
   __shared__ int T[2*HISTOGRAM_LENGTH];
   int i =2 * blockIdx.x * blockDim.x + threadIdx.x;
+<<<<<<< HEAD
 
+=======
+>>>>>>> 0e00539544665c903cde2a2240e3290905c69cb4
   if(i < len){
     T[threadIdx.x] = input[i];
   }
@@ -30,14 +37,22 @@ __global__ void scan(int *input, int *output, int len) {
   
   int stride = 1;
   while(stride < 2 * HISTOGRAM_LENGTH){
+<<<<<<< HEAD
      __syncthreads();
+=======
+    __syncthreads();
+>>>>>>> 0e00539544665c903cde2a2240e3290905c69cb4
     int index = (threadIdx.x + 1) * stride * 2 -1;
     if(index < 2 * HISTOGRAM_LENGTH && (index-stride) >= 0){
       T[index] += T[index - stride];
     }
     stride *= 2;
   }
+<<<<<<< HEAD
 
+=======
+  //__syncthreads();
+>>>>>>> 0e00539544665c903cde2a2240e3290905c69cb4
   stride = HISTOGRAM_LENGTH / 2;
   while(stride > 0){
     __syncthreads();
@@ -50,7 +65,10 @@ __global__ void scan(int *input, int *output, int len) {
   __syncthreads();
   if(i < len) output[i] = T[threadIdx.x];
   if(i + blockDim.x < len) output[i+blockDim.x] = T[threadIdx.x + blockDim.x];
+<<<<<<< HEAD
   
+=======
+>>>>>>> 0e00539544665c903cde2a2240e3290905c69cb4
 }
 
 __global__ void RGB2Gray(float* RGB, int* gray, int* hist, int w, int h){
@@ -63,7 +81,10 @@ __global__ void RGB2Gray(float* RGB, int* gray, int* hist, int w, int h){
     float b = RGB[idx*3+2];
     gray[idx] = 255* (0.21*r + 0.71*g + 0.07*b);
     atomicAdd(&(hist[gray[idx]]),1);
+<<<<<<< HEAD
     //hist[gray[idx]]++;
+=======
+>>>>>>> 0e00539544665c903cde2a2240e3290905c69cb4
   }
 }
 
